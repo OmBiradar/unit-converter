@@ -1,0 +1,5 @@
+# Build outputs
+unitconverter-darwin-amd64
+unitconverter-linux-arm64
+unitconverter-linux-amd64
+unitconverter-windows-amd64.exe
