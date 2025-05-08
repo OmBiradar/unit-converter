@@ -45,6 +45,8 @@ func convertUnit(args []string) string {
 		switch toUnit {
 		case "F", "fahrenheit":
 			result = celsiusToFahrenheit(value)
+		case "K", "kelvin":
+			result = celsiusToKelvin(value)
 		default:
 			errConv = fmt.Errorf("invalid conversion from %s to %s", fromUnit, toUnit)
 		}
@@ -52,6 +54,17 @@ func convertUnit(args []string) string {
 		switch toUnit {
 		case "C", "celsius":
 			result = fahrenheitToCelsius(value)
+		case "K", "kelvin":
+			result = fahrenheitToKelvin(value)
+		default:
+			errConv = fmt.Errorf("invalid conversion from %s to %s", fromUnit, toUnit)
+		}
+	case "K", "kelvin":
+		switch toUnit {
+		case "C", "celsius":
+			result = kelvinToCelsius(value)
+		case "F", "fahrenheit":
+			result = kelvinToFahrenheit(value)
 		default:
 			errConv = fmt.Errorf("invalid conversion from %s to %s", fromUnit, toUnit)
 		}
@@ -85,12 +98,28 @@ func main() {
 	fmt.Print(output)
 }
 
+func celsiusToKelvin(c float64) float64 {
+	return c + 273.15
+}
+
+func kelvinToCelsius(k float64) float64 {
+	return k - 273.15
+}
+
+func fahrenheitToKelvin(f float64) float64 {
+	return (f-32)*5/9 + 273.15
+}
+
+func kelvinToFahrenheit(k float64) float64 {
+	return (k-273.15)*9/5 + 32
+}
+
 func celsiusToFahrenheit(c float64) float64 {
-	return (c * 9 / 5) + 32
+	return kelvinToFahrenheit(celsiusToKelvin(c))
 }
 
 func fahrenheitToCelsius(f float64) float64 {
-	return (f - 32) * 5 / 9
+	return kelvinToCelsius(fahrenheitToKelvin(f))
 }
 
 func kilometersToMiles(km float64) float64 {
